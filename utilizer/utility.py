@@ -4,10 +4,11 @@ import imaplib
 
 class ReplyMsg(imaplib.IMAP4_SSL):
     """
-    *************************
+    This is a utility class to help facilitate the reply of email thread
     """
     def __init__(self, host):
         super().__init__(host)
+        self.labels = None
 
     def logout(self):
         try:
@@ -22,8 +23,8 @@ class ReplyMsg(imaplib.IMAP4_SSL):
             return e
 
     def list_folder_label(self):
-        labels = self.list()[1]
-        return [re.findall(r'"([^"]*)"', l.decode("UTF-8"))[-1] for l in labels]
+        self.labels = self.list()[1]
+        return [re.findall(r'"([^"]*)"', l.decode("UTF-8"))[-1] for l in self.labels]
 
 
 
