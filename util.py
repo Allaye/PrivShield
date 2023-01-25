@@ -49,5 +49,13 @@ def clean_files(ignore_path='/.guard'):
             os.chdir('..')
             os.rmdir('.guard')
             click.secho("lookup files and directory has been removed", fg='green')
-       
+        else:
+            os.chdir(ignore_path)
+            click.secho("Removing default lookup directory and files", fg='green')
+            os.remove('.keyignore')
+            os.remove('.fileignore')
+            os.chdir('..')
+            os.rmdir('.guard')
+            click.secho("lookup files and directory has been removed", fg='green')
+   
 
