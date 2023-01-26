@@ -36,3 +36,25 @@ def prep_files():
         click.secho(f"Error: {e}", fg='red')
         pass
 
+
+def clean_files(ignore_path='/.shield.lock'):
+    """
+    remove .fileignore and .keyignore files from the project root
+    """
+    try:
+        if os.getcwd() == '.shield.lock':
+            click.secho("Removing default lookup directory and files", fg='green')
+            os.remove('.keyignore')
+            os.remove('.fileignore')
+            os.chdir('..')
+            os.rmdir('.shield.lock')
+            click.secho("lookup files and directory has been removed", fg='green')
+        else:
+            os.chdir(ignore_path)
+            click.secho("Removing default lookup directory and files", fg='green')
+            os.remove('.keyignore')
+            os.remove('.fileignore')
+            os.chdir('..')
+            os.rmdir('.shield.lock')
+            click.secho("lookup files and directory has been removed", fg='green')
+    
