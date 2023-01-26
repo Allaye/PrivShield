@@ -57,4 +57,16 @@ def clean_files(ignore_path='/.shield.lock'):
             os.chdir('..')
             os.rmdir('.shield.lock')
             click.secho("lookup files and directory has been removed", fg='green')
-    
+    except FileNotFoundError:
+        click.secho("cant find lookup folder or privshield is not initialized", fg='yellow')
+        pass
+    except InterruptedError:
+        click.secho("privshield initialization was interrupted", fg='yellow')
+        pass
+    except PermissionError:
+        click.secho("Error you dont have permission for i/o operation", fg='red')
+        pass
+    except Exception as e:
+        click.secho(f"Error: {e}", fg='red')
+        pass
+
