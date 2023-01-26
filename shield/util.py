@@ -22,4 +22,17 @@ def prep_files():
                           'password =\n', 'secret =\n', 'token =\n', 'access_token =\n'])
             f.close()
         click.secho(".keyignore file created and populated", fg='green')
-    
+    except FileExistsError:
+        click.secho("PrivShield is already initialized", fg='yellow')
+        pass
+    except InterruptedError:
+        click.secho("privshield initialization was interrupted", fg='yellow')
+        pass
+    except PermissionError:
+        click.secho("Error you dont have permission for i/o operation", fg='red')
+        pass
+    # general exception
+    except Exception as e:
+        click.secho(f"Error: {e}", fg='red')
+        pass
+
