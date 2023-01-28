@@ -1,7 +1,4 @@
-# Description: utility functions for privshield
-# author: Kolade Gideon @Allaye
-# created: 2022-06-10
-# last modified: 202-08-10
+
 
 import os
 import click
