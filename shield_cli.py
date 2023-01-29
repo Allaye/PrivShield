@@ -103,3 +103,27 @@ def add(add):
     finally:
         f.close()
 
+
+@cli.command()
+@click.argument('ignore', nargs=1, type=str)
+def ignore(ignore):
+    """ignore a file from scanning by adding them to .shield.lock/.fileignore"""
+    exempted_files = [str(file.strip())
+                      for file in open('.shield.lock/.fileignore').readlines()]
+    try:
+        with open('.shield.lock/.fileignore', 'a') as f:
+            if ignore not in exempted_files:
+                f.write(f"{ignore}\n")
+                f.close()
+                click.secho(
+                    f"Added `{ignore}` to .fileignore", fg='green')
+            else:
+                click.secho(
+                    f"`{ignore}` already exists in .shield.lock/.fileignore", fg='yellow')
+    except FileNotFoundError:
+        click.secho("Please initialize the PrivShield first", fg='red')
+
+
+if __name__ == '__main__':
+    print("Welcome to PrivShield")
+    cli()
