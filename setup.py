@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 with open("requirements.txt", "r", encoding="utf-8") as fh:
     requirements = fh.read()
 setup(
-    name='key_guard',
+    name='privshield',
     version='0.0.1a',
     author='Kolade Gideon',
     license='MIT',
