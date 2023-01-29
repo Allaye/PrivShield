@@ -81,3 +81,25 @@ def skim(path):
     except FileNotFoundError:
         click.echo(click.style("\nCould not complete scan, make sure key-guard is initialized\n", fg='red'))
 
+
+@cli.command()
+@click.argument('add', type=str, nargs=-1)
+def add(add):
+    """Add new words to .shield.lock/.keyignore"""
+    guarded_words = [str(word.strip())
+                     for word in open('.shield.lock/.keyignore').readlines()]
+    try:
+        with open('.shield.lock/.keyignore', 'a') as f:
+            for word in add:
+                if word not in guarded_words:
+                    f.write(f"{word}\n")
+                    click.secho(
+                        f"Added `{word}` to .keyignore", fg='green')
+                else:
+                    click.secho(
+                        f"`{word}` already exists in .shield.lock/.keyignore", fg='yellow')
+    except FileNotFoundError:
+        click.secho("Tool initialization is required", fg='red')
+    finally:
+        f.close()
+
