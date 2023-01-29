@@ -16,3 +16,41 @@ class ShieldCli:
         self.keyignore_path = os.path.abspath(".shield.lock/.keyignore")
         self.file_content = Shield().load_paths(self.fileignore_path, self.keyignore_path)
 
+
+@click.group(invoke_without_command=True)
+@click.pass_context
+@click.option('-l', '--list', is_flag=True, help='List all the guarded words')
+@click.option('-inc', '--include', nargs=1,
+              help='include a file to be scanned by removing it\'s name from  .shield.lock/.fileignore')
+def cli(ctx, list, include):
+    if ctx.invoked_subcommand is None:
+        if list:
+            fileignore_path = os.path.abspath(".shield.lock/.fileignore")
+            keyignore_path = os.path.abspath(".shield.lock/.keyignore")
+            file_content = Shield().load_paths(fileignore_path, keyignore_path)
+            click.echo(file_content["guarded_words"])
+        if include:
+            exempted_files = [str(file.strip())
+                              for file in open('.shield.lock/.fileignore').readlines()]
+            try:
+                with open('.shield.lock/.fileignore', 'r') as f:
+                    lines = f.readlines()
+                    f.close()
+                with open('.shield.lock/.fileignore', 'w') as f:
+                    for line in lines:
+                        if line.strip("\n") != include:
+                            f.write(line)
+                        else:
+                            # lines.remove(line)  causes uninteded behaviour
+                            exempted_files.remove(line.strip("\n"))
+                            click.secho(
+                                f"Removed `{include}` from .fileignore", fg='green')
+                    f.close()
+            except FileNotFoundError:
+                click.secho("Please initialize the PrivShield first", fg='red')
+        elif not list and not include:
+            click.secho(
+                "Env Scanning tool PrivShield. To get help use the `--help` flag for the list of options and "
+                "commands available",
+                fg='green')
+
