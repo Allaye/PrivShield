@@ -68,6 +68,16 @@ def clean():
     clean_files()
 
 
-if __name__ == '__main__':
-    print("Welcome to PrivShield")
-    cli()
+@cli.command()
+@click.argument('path', type=click.Path(dir_okay=True), default=os.getcwd(), required=False)
+def skim(path):
+    """Scan the project for any key or token"""
+    fileignore_path = os.path.abspath(".shield.lock/.fileignore")
+    keyignore_path = os.path.abspath(".shield.lock/.keyignore")
+    '''Scan the project for any key or token'''
+    try:
+        Shield().search(path, fileignore_path, keyignore_path)
+        click.echo(click.style("\nScanning completed successfully", fg='green'))
+    except FileNotFoundError:
+        click.echo(click.style("\nCould not complete scan, make sure key-guard is initialized\n", fg='red'))
+
