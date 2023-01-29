@@ -53,3 +53,21 @@ def cli(ctx, list, include):
                 "commands available",
                 fg='green')
 
+
+@cli.command()
+def init():
+    """create .shield.lock folder and create .fileignore and .keyignore files"""
+    click.secho("PrivShield been Initialed...", fg='green')
+    prep_files()
+
+
+@cli.command()
+def clean():
+    """Removing all directories and files created."""
+    click.secho("Removing all directories and files created....", fg='yellow')
+    clean_files()
+
+
+if __name__ == '__main__':
+    print("Welcome to PrivShield")
+    cli()
